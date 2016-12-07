@@ -37,6 +37,7 @@ class ApplicationStartup implements ApplicationListener<ApplicationReadyEvent> {
         L.info("Loaded " + meRepository.tokenMeMap.size() + " records to me repository. ");
 
         pictureRepository.loadSamples();
+        pictureRepository.load();
         L.info("Loaded samples");
 
     }

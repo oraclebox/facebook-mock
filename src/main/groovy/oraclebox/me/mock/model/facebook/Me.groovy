@@ -6,56 +6,60 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder([
-    "id",
-    "name",
-    "about",
-    "age_range",
-    "birthday",
-    "email",
-    "gender",
-    "first_name",
-    "last_name",
-    "work",
-    "location",
-    "locale",
-    "languages",
-    "timezone",
-    "updated_time",
-    "friends"
+        "id",
+        "name",
+        "about",
+        "age_range",
+        "birthday",
+        "email",
+        "gender",
+        "first_name",
+        "last_name",
+        "work",
+        "location",
+        "locale",
+        "languages",
+        "timezone",
+        "updated_time",
+        "friends"
 ])
- class Me {
+class Me {
 
     @JsonProperty("id")
-     String id;
+    String id;
     @JsonProperty("name")
-     String name;
+    String name;
     @JsonProperty("about")
-     String about;
+    String about;
     @JsonProperty("age_range")
-     AgeRange ageRange;
+    AgeRange ageRange;
     @JsonProperty("birthday")
-     String birthday;
+    String birthday;
     @JsonProperty("email")
-     String email;
+    String email;
     @JsonProperty("gender")
-     String gender;
+    String gender;
     @JsonProperty("first_name")
-     String firstName;
+    String firstName;
     @JsonProperty("last_name")
-     String lastName;
+    String lastName;
     @JsonProperty("work")
-     List<Work> work = null;
+    List<Work> work = null;
     @JsonProperty("location")
-     Location location;
+    Location location;
     @JsonProperty("locale")
-     String locale;
+    String locale;
     @JsonProperty("languages")
-     List<Language> languages = null;
+    List<Language> languages = null;
     @JsonProperty("timezone")
-     Integer timezone;
+    Integer timezone;
     @JsonProperty("updated_time")
-     String updatedTime;
+    String updatedTime;
     @JsonProperty("friends")
-     Friends friends;
+    Friends friends;
+    @JsonProperty("country") // Not facebook value
+    String country;
+    @JsonProperty("region") // Not facebook value
+    String region;
 
 }

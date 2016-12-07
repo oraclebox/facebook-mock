@@ -1,8 +1,10 @@
 package oraclebox.me.mock.service
 
+import oraclebox.me.mock.model.data.Image
 import oraclebox.me.mock.model.data.MeRepository
 import oraclebox.me.mock.model.data.MockData
 import oraclebox.me.mock.model.data.MockDataRepository
+import oraclebox.me.mock.model.data.PictureRepository
 import oraclebox.me.mock.model.facebook.AgeRange
 import oraclebox.me.mock.model.facebook.Employer
 import oraclebox.me.mock.model.facebook.Language
@@ -24,6 +26,10 @@ interface FacebookService {
     long createId();
 
     Me loadOrCreateFacebookUser(String accessToken);
+
+
+    Image findUserImage(String id);
+
 }
 
 @Service
@@ -37,6 +43,9 @@ class FacebookServiceImpl implements FacebookService {
 
     @Autowired
     DataService dataService;
+
+    @Autowired
+    PictureRepository pictureRepository;
 
     @Override
     Me createMockFacebookUser(MockData mockData) {
@@ -56,13 +65,17 @@ class FacebookServiceImpl implements FacebookService {
         if (country == "japan") {
             me.lastName = StringUtils.substring(me.name, 0, 2);
             me.firstName = StringUtils.substring(me.name, 2);
+            me.region = 'asian'
         } else if (country == "china") {
             me.lastName = StringUtils.substring(me.name, 0, 1);
             me.firstName = StringUtils.substring(me.name, 1);
+            me.region = 'asian';
         } else {
             me.firstName = StringUtils.split(me.name, " ")?.first();
             me.lastName = StringUtils.split(me.name, " ")?.last();
+            me.region = 'western';
         }
+        me.country = country;
         me.ageRange = new AgeRange(min: dataService.randomWithinRange(12, 40));
         me.birthday = createBirthday(me.ageRange.min);
         me.email = UUID.randomUUID().toString() + "@" + mockData.domains[dataService.randomWithinRange(0, mockData.domains.size())];
@@ -85,6 +98,7 @@ class FacebookServiceImpl implements FacebookService {
                     employer: new Employer(name: mockData.companies[dataService.randomWithinRange(0, mockData.companies.size())])
             ));
         }
+        pictureRepository.getImages(me, 1);
         return me;
     }
 
@@ -113,6 +127,11 @@ class FacebookServiceImpl implements FacebookService {
             meRepository.save(accessToken, me);
         }
         return me;
+    }
+
+    @Override
+    Image findUserImage(String id) {
+        return pictureRepository.userImagesMap.get(id);
     }
 }
 

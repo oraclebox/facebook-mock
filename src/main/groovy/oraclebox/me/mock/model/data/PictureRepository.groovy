@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.type.MapType
 import com.fasterxml.jackson.databind.type.TypeFactory
 import groovy.transform.Synchronized
 import oraclebox.me.mock.model.facebook.Me
+import oraclebox.me.mock.service.DataService
 import org.apache.catalina.User
 import org.apache.commons.io.FileUtils
 import org.apache.commons.lang3.StringUtils
@@ -15,6 +16,9 @@ import org.springframework.stereotype.Component
 class PictureRepository {
 
     @Autowired
+    DataService dataService;
+
+    @Autowired
     ObjectMapper objectMapper;
 
     Map<String, Image> maleAsian = [:];
@@ -22,39 +26,41 @@ class PictureRepository {
     Map<String, Image> maleWestern = [:];
     Map<String, Image> femaleWestern = [:];
 
-    Map<String, List<Image>> userImagesMap = [:];
+    Map<String, Image> userImagesMap = [:];
 
-//    Map<String, Me> tokenMeMap = [:];
-//
-//    void save(String token, Me me) {
-//        tokenMeMap.put(token, me);
-//        // Write to file also
-//        objectMapper.writeValue(new File("created_me.json"), tokenMeMap);
-//    }
-//
-//    void load() {
-//        TypeFactory typeFactory = objectMapper.getTypeFactory();
-//        MapType mapType = typeFactory.constructMapType(HashMap.class, String.class, Me.class);
-//        tokenMeMap = objectMapper.readValue(new File("created_me.json"), mapType);
-//        print(tokenMeMap);
-//    }
+    void load() {
+        TypeFactory typeFactory = objectMapper.getTypeFactory();
+        MapType mapType = typeFactory.constructMapType(HashMap.class, String.class, Image.class);
+        userImagesMap = objectMapper.readValue(new File("user_images.json"), mapType);
+    }
 
     @Synchronized
-    void save(){
+    void save() {
         objectMapper.writeValue(new File("user_images.json"), userImagesMap);
     }
 
-    List<Image> getImages(Me me, int maxNumberOfImages){
-        if(!userImagesMap.containsKey(me.id)){
-            // TODO random generate images 1..max
-            // TODO Store to map
+    List<Image> getImages(Me me, int maxNumberOfImages) {
+        if (!userImagesMap.containsKey(me.id)) {
+            Image image = null;
+            if (me.region == 'asian') {
+                if (me.gender == 'male')
+                    image = maleAsian.values()[dataService.randomWithinRange(1, maleAsian.size())];
+                else
+                    image = femaleAsian.values()[dataService.randomWithinRange(1, femaleAsian.size())];
+            } else {
+                if (me.gender == 'male')
+                    image = maleWestern.values()[dataService.randomWithinRange(1, maleWestern.size())];
+                else
+                    image = femaleWestern.values()[dataService.randomWithinRange(1, femaleWestern.size())];
+            }
+            userImagesMap.put(me.id, image);
             save();
-        }else{
+        } else {
             return userImagesMap.get(me.id);
         }
     }
 
-    void loadSamples(){
+    void loadSamples() {
         maleAsian = listFileImages("sample/male/asian");
         femaleAsian = listFileImages("sample/female/asian");
         maleWestern = listFileImages("sample/male/western");
