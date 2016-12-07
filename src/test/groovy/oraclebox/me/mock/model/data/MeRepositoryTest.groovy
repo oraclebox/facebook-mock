@@ -27,7 +27,7 @@ class MeRepositoryTest {
     @Test
     void save() throws Exception {
         mockDataRepository.refresh(["japanese.json", "chinese.json", "western.json"]);
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 1; i++) {
             Me me = facebookService.createMockFacebookUser(mockDataRepository.mockDataLinkedHashMap.values()[dataService.randomWithinRange(0, 2)]);
             meRepository.save(me.id, me);
         }

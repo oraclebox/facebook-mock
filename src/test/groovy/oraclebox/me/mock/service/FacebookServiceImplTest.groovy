@@ -29,7 +29,7 @@ class FacebookServiceImplTest {
     @Test
     void createMockFacebookUserChinese() {
         // Chinese
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 1; i++) {
             MockData mockData = dataService.loadMockData("chinese.json");
             Me me = facebookService.createMockFacebookUser(mockData);
         }
@@ -38,7 +38,7 @@ class FacebookServiceImplTest {
     @Test
     void createMockFacebookUserWestern() {
         // Western
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 1; i++) {
             MockData mockData = dataService.loadMockData("western.json");
             Me me = facebookService.createMockFacebookUser(mockData);
         }

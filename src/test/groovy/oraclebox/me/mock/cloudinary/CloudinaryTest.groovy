@@ -7,7 +7,7 @@ import org.junit.Test
 
 class CloudinaryTest {
 
-    @Test
+    //@Test
     void cloudinary(){
         Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
                 "cloud_name", "dguvbakpe",
