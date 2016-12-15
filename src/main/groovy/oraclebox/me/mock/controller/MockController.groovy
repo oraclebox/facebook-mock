@@ -29,13 +29,15 @@ class MockController {
     }
 
 
-    @RequestMapping(value = "/graph/{userId}/picture")
-    ResponseEntity<byte[]> picture(@PathVariable String userId) {
+    @RequestMapping(value = "/graph/me/picture")
+    ResponseEntity<byte[]> picture(@RequestParam(value = "access_token") String accessToken) {
+        Me me = facebookService.loadOrCreateFacebookUser(accessToken);
         HttpHeaders headers = new HttpHeaders();
-        Image image = facebookService.findUserImage(userId);
+        Image image = facebookService.findUserImage(me.id);
         InputStream is = new FileInputStream(image.file);
         byte[] media = IOUtils.toByteArray(is);
         headers.setContentType(MediaType.IMAGE_PNG);
+        headers.setContentLength(media.size());
         headers.setCacheControl(CacheControl.noCache().getHeaderValue());
         ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(media, headers, HttpStatus.OK);
         return responseEntity;

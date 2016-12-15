@@ -4,9 +4,10 @@ spring:
 server:
   port: 9800
   compression:
-    enabled: on
-    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+    enabled: off
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain,image/png
   tomcat:
     protocol_header: x-forwarded-proto
+    accessLogEnabled: true
   use-forward-headers: true
 
