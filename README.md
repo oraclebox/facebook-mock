@@ -29,5 +29,21 @@ Get http://localhost:9800/mock/graph/me/picture?access_token=[UUID mimic faceboo
 
 Return profile picture of user
 
+### Add User Picture
+
+All user pictures will be placed under the sample folder. You can add more .png images to enrich the randomness of created profile.
+
+For example, you can add a **.png** photo under sample/female/asian, as result, this profile picture will be in the selection of new profile creation.
+
+### User detail
+
+User detail are defined by these json files
+
+chinese.json
+
+japanese.json
+
+western.json
+
 
 
